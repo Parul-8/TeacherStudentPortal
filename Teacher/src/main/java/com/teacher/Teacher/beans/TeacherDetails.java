@@ -21,7 +21,7 @@ public class TeacherDetails {
 	
 	private String username;
 	
-	@Email(message = "Email should be in proper format!!")
+	@Email(message = "Email should be in proper format!!!")
 	private String email;
 	
 	private String password;
