@@ -2,6 +2,7 @@ package com.teacher.Teacher.controllers;
 
 import java.util.List;
 
+import javax.persistence.criteria.Fetch;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import com.teacher.Teacher.services.StudentService;
 import com.teacher.Teacher.services.TeacherService;
 
 @RestController
-public class TeacherControllers {
+public class HomeController {
 	
 
 	
@@ -35,19 +36,21 @@ public class TeacherControllers {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	/* Api for testing  */
 	@GetMapping("/homee")
 	public String home() {
-		return "welcome";
+		return "welcome HOME!!";
 	}
 	
-	
-	@PostMapping("/addTeacherDetails")
+	/* for registering teacher details */
+	@PostMapping("/teacher/signUp")
 	public ResponseEntity<TeacherDetails> createTeacher(@Valid @RequestBody TeacherDetails teacher){
 		teacher.setPassword(bCryptPasswordEncoder.encode(teacher.getPassword()));
 		TeacherDetails teacherSaved = this.teacherService.createTeacher(teacher);
 		return new ResponseEntity<>(teacherSaved,HttpStatus.CREATED);
 	}
 	
+	/* to fetch teacher details using id */
 	@GetMapping("/teacher/{tId}")
 	public ResponseEntity<TeacherDetails> getTeacherDetails(@PathVariable("tId") Integer tId){
 		
@@ -56,7 +59,7 @@ public class TeacherControllers {
 	}
 	
 	/* add student details */
-	@PostMapping("/addStudent")
+	@PostMapping("/student/add")
 	public ResponseEntity<StudentDetails> addStudent(@RequestBody StudentDetails student) {
 		
 		StudentDetails studentSaved = this.studentService.createStudent(student);
@@ -64,14 +67,25 @@ public class TeacherControllers {
 		
 	}
 	
-	@GetMapping("/student/{rollNo}")
-	public ResponseEntity<StudentDetails> getStudentByRollNo(@PathVariable("rollNo") Integer rollNo){
+	/* update student details */
+	@PostMapping("/student/update")
+	public ResponseEntity<StudentDetails> updateStudent(@RequestBody StudentDetails student) {
 		
-		return ResponseEntity.ok(studentService.getStudentByRollNo(rollNo));
+		StudentDetails studentSaved = this.studentService.updateStudent(student);
+		return new ResponseEntity<>(student,HttpStatus.CREATED);
 		
 	}
 	
-	@GetMapping("/allStudents")
+	/* Fetch studentFetch details using id */
+	@GetMapping("/student/{id}")
+	public ResponseEntity<StudentDetails> getStudentById(@PathVariable("id") Integer sId){
+		
+		return ResponseEntity.ok(studentService.getStudentById(sId));
+		
+	}
+	
+	/* Fetch all student details with proper pagination */
+	@GetMapping("/student/all")
 	public ResponseEntity<StudentResponse> getAllStudents(
 			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
 			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize){

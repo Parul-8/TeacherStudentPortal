@@ -1,6 +1,7 @@
 package com.teacher.Teacher.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.teacher.Teacher.beans.StudentDetails;
 import com.teacher.Teacher.beans.StudentResponse;
+import com.teacher.Teacher.exceptions.ResourceAlreadyExistException;
+import com.teacher.Teacher.exceptions.ResourceNotFoundException;
 import com.teacher.Teacher.repositories.StudentRepository;
 import com.teacher.Teacher.services.StudentService;
 
@@ -21,6 +24,13 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public StudentDetails createStudent(StudentDetails student) {
+		Optional<StudentDetails> optional = this.studentRepo.findByRollNo(student.getRollNo());
+		
+		if(optional.isPresent()) {
+			
+			throw new ResourceAlreadyExistException("Student", "RollNo", student.getRollNo().toString());
+			
+		}
 		
 		StudentDetails savedStudent = this.studentRepo.save(student);
 		return savedStudent;
@@ -28,8 +38,9 @@ public class StudentServiceImpl implements StudentService {
 
 
 	@Override
-	public StudentDetails getStudentByRollNo(Integer rollNo) {
-		StudentDetails student = this.studentRepo.getById(rollNo);
+	public StudentDetails getStudentById(Integer id) {
+		StudentDetails student = this.studentRepo.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Student", " id ", id));
 		return student;
 	}
 
@@ -61,7 +72,9 @@ public class StudentServiceImpl implements StudentService {
 
 
 	@Override
-	public StudentDetails updateStudents(StudentDetails student) {
+	public StudentDetails updateStudent(StudentDetails student) {
+		this.studentRepo.findByRollNo(student.getRollNo())
+				.orElseThrow(() -> new ResourceNotFoundException("Student", "RollNo", student.getRollNo()));
 		StudentDetails savedStudent = this.studentRepo.save(student);
 		return savedStudent;
 	}

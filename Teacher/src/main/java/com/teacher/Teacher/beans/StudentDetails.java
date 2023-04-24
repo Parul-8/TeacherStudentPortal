@@ -1,5 +1,6 @@
 package com.teacher.Teacher.beans;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ public class StudentDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer sId;
+	
 	private Integer rollNo;
 	
 	private String name;
@@ -29,8 +32,12 @@ public class StudentDetails {
 		// TODO Auto-generated constructor stub
 	}
 
-	public StudentDetails(Integer rollNo, String name, String dept, String standard, Integer age, String gender) {
+	
+
+	public StudentDetails(Integer sId, Integer rollNo, String name, String dept, String standard, Integer age,
+			String gender) {
 		super();
+		this.sId = sId;
 		this.rollNo = rollNo;
 		this.name = name;
 		this.dept = dept;
@@ -38,6 +45,20 @@ public class StudentDetails {
 		this.age = age;
 		this.gender = gender;
 	}
+
+
+
+	public Integer getsId() {
+		return sId;
+	}
+
+
+
+	public void setsId(Integer sId) {
+		this.sId = sId;
+	}
+
+
 
 	public Integer getRollNo() {
 		return rollNo;

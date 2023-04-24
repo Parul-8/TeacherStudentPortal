@@ -1,5 +1,6 @@
 package com.teacher.Teacher.beans;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class TeacherDetails {
 	
 	private String username;
 	
+	@Column(unique = true)
 	@Email(message = "Email should be in proper format!!!")
 	private String email;
 	
