@@ -1,8 +1,6 @@
 package com.teacher.Teacher.services.impl;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,5 +58,12 @@ public class StudentServiceImpl implements StudentService {
 
 			return studentResponse;
 		}
+
+
+	@Override
+	public StudentDetails updateStudents(StudentDetails student) {
+		StudentDetails savedStudent = this.studentRepo.save(student);
+		return savedStudent;
+	}
 
 }

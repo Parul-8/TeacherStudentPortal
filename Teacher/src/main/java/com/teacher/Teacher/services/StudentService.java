@@ -9,6 +9,8 @@ public interface StudentService {
 	
 	public StudentDetails createStudent(StudentDetails student);
 	
+	public StudentDetails updateStudents(StudentDetails student);
+	
 	public StudentDetails getStudentByRollNo(Integer rollNo);
 	
 	public StudentResponse getAllStudents(Integer pageNumber,Integer pageSize);
